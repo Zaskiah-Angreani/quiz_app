@@ -45,12 +45,13 @@ class ResultScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               Text(
-                'Kerja Bagus, ${quizProvider.userName}!',
+                '${quizProvider.userName} (${quizProvider.studentId})',
                 style: GoogleFonts.poppins(
-                  fontSize: isTabletOrWeb ? 20 : 16,
+                  fontSize: isTabletOrWeb ? 18 : 15,
                   color: Colors.grey,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 24),
@@ -97,8 +98,6 @@ class ResultScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-
-              // Tombol Lihat Pembahasan
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
@@ -123,8 +122,6 @@ class ResultScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-
-              // Tombol Coba Lagi
               CustomButton(
                 text: 'Coba Lagi',
                 onPressed: () {

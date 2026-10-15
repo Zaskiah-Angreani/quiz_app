@@ -3,10 +3,10 @@ import '../models/question.dart';
 
 class QuizProvider extends ChangeNotifier {
   String _userName = '';
+  String _studentId = '';
   int _currentQuestionIndex = 0;
   bool _isThemeDark = true;
 
-  // Menyimpan riwayat jawaban pengguna [indexSoal: indexJawaban]
   final Map<int, int> _userAnswers = {};
 
   final List<Question> _questions = [
@@ -15,7 +15,7 @@ class QuizProvider extends ChangeNotifier {
       questionText: 'Apa nama framework UI buatan Google untuk pengembangan aplikasi lintas platform?',
       options: ['React Native', 'Flutter', 'Xamarin', 'Ionic'],
       correctAnswerIndex: 1,
-      explanation: 'Flutter adalah SDK UI buatan Google yang memungkinkan pengembangan aplikasi lintas platform (Android, iOS, Web, Desktop) dari satu basis kode Dart.',
+      explanation: 'Flutter adalah SDK UI buatan Google yang memungkinkan pengembangan aplikasi lintas platform dari satu basis kode Dart.',
     ),
     Question(
       id: 'q2',
@@ -29,7 +29,7 @@ class QuizProvider extends ChangeNotifier {
       questionText: 'Widget mana yang bersifat immutable (tidak mengalami perubahan state internal)?',
       options: ['StatefulWidget', 'StatelessWidget', 'InheritedWidget', 'Provider'],
       correctAnswerIndex: 1,
-      explanation: 'StatelessWidget bersifat immutable (nilainya tidak berubah) dan tampilannya hanya bergantung pada konfigurasi awal yang diberikan.',
+      explanation: 'StatelessWidget bersifat immutable dan tampilannya hanya bergantung pada konfigurasi awal yang diberikan.',
     ),
     Question(
       id: 'q4',
@@ -43,35 +43,35 @@ class QuizProvider extends ChangeNotifier {
       questionText: 'Metode mana yang dipanggil untuk memperbarui tampilan pada StatefulWidget?',
       options: ['setState()', 'build()', 'initState()', 'notifyListeners()'],
       correctAnswerIndex: 0,
-      explanation: 'Metode setState() memberi tahu framework bahwa state internal objek telah berubah, yang memicu pembentukan ulang (rebuild) UI.',
+      explanation: 'Metode setState() memberi tahu framework bahwa state internal objek telah berubah, memicu pembentukan ulang UI.',
     ),
   ];
 
   // Getters
   String get userName => _userName;
+  String get studentId => _studentId;
   int get currentQuestionIndex => _currentQuestionIndex;
   List<Question> get questions => _questions;
   bool get isThemeDark => _isThemeDark;
   Question get currentQuestion => _questions[_currentQuestionIndex];
   Map<int, int> get userAnswers => _userAnswers;
 
-  // Mengambil jawaban pengguna pada soal saat ini (bisa null jika belum dijawab)
+  // Getter yang dibutuhkan oleh quiz_screen.dart
   int? get selectedAnswerIndex => _userAnswers[_currentQuestionIndex];
 
-  // Menghitung skor total
   int get score {
     int calculatedScore = 0;
     _userAnswers.forEach((qIndex, aIndex) {
       if (_questions[qIndex].correctAnswerIndex == aIndex) {
-        calculatedScore += 20; // 5 soal x 20 = 100
+        calculatedScore += 20;
       }
     });
     return calculatedScore;
   }
 
-  // Setters & Actions
-  void setUserName(String name) {
+  void setUserDetails(String name, String nim) {
     _userName = name;
+    _studentId = nim;
     notifyListeners();
   }
 
@@ -91,7 +91,7 @@ class QuizProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     }
-    return false; // Kuis selesai
+    return false;
   }
 
   bool previousQuestion() {

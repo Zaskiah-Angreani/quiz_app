@@ -40,7 +40,6 @@ class QuizScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Progress Bar
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: LinearProgressIndicator(
@@ -51,7 +50,6 @@ class QuizScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Card Pertanyaan
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
@@ -76,7 +74,6 @@ class QuizScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // List Pilihan Jawaban
               Expanded(
                 child: ListView.builder(
                   itemCount: currentQuestion.options.length,
@@ -86,7 +83,6 @@ class QuizScreen extends StatelessWidget {
                       isSelected: quizProvider.selectedAnswerIndex == index,
                       onTap: () {
                         quizProvider.selectAnswer(index);
-                        // Notifikasi Umpan Balik Jawaban Disimpan
                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -114,29 +110,37 @@ class QuizScreen extends StatelessWidget {
                 ),
               ),
 
-              // Tombol Navigasi (Kembali & Selanjutnya)
               Row(
                 children: [
                   if (!isFirstQuestion) ...[
                     Expanded(
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                      child: SizedBox(
+                        height: isTabletOrWeb ? 60 : 50,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 1.5,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                        ),
-                        onPressed: () => quizProvider.previousQuestion(),
-                        child: Text(
-                          'Kembali',
-                          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                          onPressed: () => quizProvider.previousQuestion(),
+                          child: Text(
+                            'Kembali',
+                            style: GoogleFonts.poppins(
+                              fontSize: isTabletOrWeb ? 18 : 16,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(width: 12),
                   ],
                   Expanded(
-                    flex: 2,
                     child: CustomButton(
                       text: isLastQuestion ? 'Lihat Hasil' : 'Selanjutnya',
                       onPressed: quizProvider.selectedAnswerIndex == null

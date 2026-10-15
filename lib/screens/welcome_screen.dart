@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/quiz_provider.dart';
@@ -14,23 +15,34 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nimController = TextEditingController();
 
   @override
   void dispose() {
     _nameController.dispose();
+    _nimController.dispose();
     super.dispose();
   }
 
   void _startQuiz() {
-    if (_nameController.text.trim().isEmpty) {
+    final name = _nameController.text.trim();
+    final nim = _nimController.text.trim();
+
+    if (name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Harap masukkan nama Anda terlebih dahulu!')),
+        const SnackBar(content: Text('Harap masukkan nama Anda!')),
       );
       return;
     }
 
-    Provider.of<QuizProvider>(context, listen: false)
-        .setUserName(_nameController.text.trim());
+    if (nim.length != 9) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('NIM harus berisi tepat 9 digit angka!')),
+      );
+      return;
+    }
+
+    Provider.of<QuizProvider>(context, listen: false).setUserDetails(name, nim);
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const QuizScreen()),
@@ -75,7 +87,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
               Text(
                 'Selamat Datang di Mobile Quiz!',
                 textAlign: TextAlign.center,
@@ -93,7 +105,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   color: Colors.grey,
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 28),
+
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -106,7 +119,26 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 style: GoogleFonts.poppins(fontSize: isTabletOrWeb ? 18 : 14),
               ),
+              const SizedBox(height: 16),
+
+              TextField(
+                controller: _nimController,
+                keyboardType: TextInputType.number,
+                maxLength: 9,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(
+                  labelText: 'NIM ',
+                  hintText: 'Contoh: 241401098',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  prefixIcon: const Icon(Icons.badge_outlined),
+                  counterText: "",
+                ),
+                style: GoogleFonts.poppins(fontSize: isTabletOrWeb ? 18 : 14),
+              ),
               const SizedBox(height: 24),
+
               CustomButton(
                 text: 'Mulai Kuis',
                 onPressed: _startQuiz,
