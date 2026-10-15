@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/quiz_provider.dart';
 import '../widgets/custom_button.dart';
+import 'review_screen.dart';
 import 'welcome_screen.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -24,10 +25,17 @@ class ResultScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.emoji_events_rounded,
-                size: isTabletOrWeb ? 130 : 90,
-                color: Colors.amber,
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.amber.withOpacity(0.15),
+                ),
+                child: Icon(
+                  Icons.emoji_events_rounded,
+                  size: isTabletOrWeb ? 110 : 80,
+                  color: Colors.amber,
+                ),
               ),
               const SizedBox(height: 16),
               Text(
@@ -45,7 +53,7 @@ class ResultScreen extends StatelessWidget {
                   color: Colors.grey,
                 ),
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: 24),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(28),
@@ -88,7 +96,35 @@ class ResultScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
+
+              // Tombol Lihat Pembahasan
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ReviewScreen(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.analytics_outlined),
+                  label: Text(
+                    'Lihat Pembahasan / Detail Jawaban',
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Tombol Coba Lagi
               CustomButton(
                 text: 'Coba Lagi',
                 onPressed: () {
