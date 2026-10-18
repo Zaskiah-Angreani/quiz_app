@@ -54,7 +54,23 @@ class ResultScreen extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 6),
+              // Badge Level yang dimainkan
+              Chip(
+                backgroundColor: quizProvider.selectedLevel == 'Mudah'
+                    ? Colors.green.shade100
+                    : Colors.red.shade100,
+                label: Text(
+                  'Level: ${quizProvider.selectedLevel}',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    color: quizProvider.selectedLevel == 'Mudah'
+                        ? Colors.green.shade800
+                        : Colors.red.shade800,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(28),

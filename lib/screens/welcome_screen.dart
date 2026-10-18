@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/quiz_provider.dart';
 import '../widgets/custom_button.dart';
-import 'quiz_screen.dart';
+import 'level_select_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -24,7 +24,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     super.dispose();
   }
 
-  void _startQuiz() {
+  void _nextPage() {
     final name = _nameController.text.trim();
     final nim = _nimController.text.trim();
 
@@ -44,8 +44,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
     Provider.of<QuizProvider>(context, listen: false).setUserDetails(name, nim);
 
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const QuizScreen()),
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const LevelSelectScreen()),
     );
   }
 
@@ -127,7 +127,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 maxLength: 9,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: InputDecoration(
-                  labelText: 'NIM ',
+                  labelText: 'NIM (9 Digit)',
                   hintText: 'Contoh: 241401098',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -140,8 +140,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               const SizedBox(height: 24),
 
               CustomButton(
-                text: 'Mulai Kuis',
-                onPressed: _startQuiz,
+                text: 'Lanjut Pilih Level',
+                onPressed: _nextPage,
               ),
             ],
           ),
