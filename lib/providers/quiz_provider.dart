@@ -10,8 +10,8 @@ class QuizProvider extends ChangeNotifier {
 
   final Map<int, int> _userAnswers = {};
 
-  final List<Question> _allQuestions = [
-    // --- SOAL LEVEL MUDAH ---
+  // --- SOAL LEVEL MUDAH ---
+  final List<Question> _easyQuestions = [
     Question(
       id: 'm1',
       questionText: 'Bahasa pemrograman utama yang digunakan dalam Flutter adalah...',
@@ -35,7 +35,7 @@ class QuizProvider extends ChangeNotifier {
     ),
     Question(
       id: 'm4',
-      questionText: ' File konfigurasi utama untuk mendaftarkan dependensi paket adalah...',
+      questionText: 'File konfigurasi utama untuk mendaftarkan dependensi paket adalah...',
       options: ['build.gradle', 'AndroidManifest.xml', 'pubspec.yaml', 'main.dart'],
       correctAnswerIndex: 2,
       explanation: 'File pubspec.yaml digunakan untuk mengatur dependensi paket, font, dan aset gambar.',
@@ -47,8 +47,10 @@ class QuizProvider extends ChangeNotifier {
       correctAnswerIndex: 1,
       explanation: 'Perintah flutter pub get digunakan untuk mengunduh semua paket yang tertulis di pubspec.yaml.',
     ),
+  ];
 
-    // --- SOAL LEVEL SULIT ---
+  // --- SOAL LEVEL SULIT ---
+  final List<Question> _hardQuestions = [
     Question(
       id: 's1',
       questionText: 'Metode mana yang dipanggil sekali saat StatefulWidget pertama kali dibuat?',
@@ -94,14 +96,12 @@ class QuizProvider extends ChangeNotifier {
   bool get isThemeDark => _isThemeDark;
   Map<int, int> get userAnswers => _userAnswers;
 
+  // Mengambil soal sesuai level yang dipilih tanpa perlu mencocokkan string
   List<Question> get questions {
-    return _allQuestions.where((q) {
-      if (_selectedLevel == 'Mudah') {
-        return q.questionText.startsWith('[Mudah]');
-      } else {
-        return q.questionText.startsWith('[Sulit]');
-      }
-    }).toList();
+    if (_selectedLevel == 'Sulit') {
+      return _hardQuestions;
+    }
+    return _easyQuestions;
   }
 
   Question get currentQuestion => questions[_currentQuestionIndex];
@@ -118,7 +118,7 @@ class QuizProvider extends ChangeNotifier {
 
   int? get selectedAnswerIndex => _userAnswers[_currentQuestionIndex];
 
-  // Setters
+  // Setters & Methods
   void setUserDetails(String name, String nim) {
     _userName = name;
     _studentId = nim;
